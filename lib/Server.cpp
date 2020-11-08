@@ -379,8 +379,14 @@ bool Server::handleRequest(const std::shared_ptr<Request> &request, const std::s
             {
                 result = controller->handleRequest(request, response);
             }
+            catch(std::exception &e)
+            {
+              result = false;
+              std::cout << "Mongoose Server error in controller :" << e.what() << std::endl;
+            }
             catch(...)
             {
+              std::cout << "Mongoose Server unknown error in controller" << std::endl;
                 result = false;
             }
 

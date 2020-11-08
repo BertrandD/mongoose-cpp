@@ -31,10 +31,10 @@ include_directories ("vendor/mongoose")
 include_directories ("vendor/libyuarel")
 add_definitions("-DMG_ENABLE_CALLBACK_USERDATA")
 add_definitions("-DMG_ENABLE_HTTP_STREAMING_MULTIPART")
-add_definitions("-DMG_ENABLE_THREADSAFE_MBUF")
+#add_definitions("-DMG_ENABLE_THREADSAFE_MBUF")
 add_definitions("-DMG_ENABLE_HTTP_WEBSOCKET=0")
 
-find_package (Threads)
+find_package (Threads REQUIRED)
 
 set(HEADERS
     lib/Utils.h
@@ -67,7 +67,7 @@ else(WIN32)
 endif (WIN32)
 
 # Compiling library
-add_library (mongoose ${SOURCES})
+add_library (mongoose SHARED ${SOURCES})
 target_link_libraries (mongoose ${EXTRA_LIBS} ${CMAKE_THREAD_LIBS_INIT})
 
 if (HAS_JSON11)
@@ -77,17 +77,17 @@ if (HAS_JSON11)
     target_link_libraries (mongoose json11)
 endif (HAS_JSON11)
 
-# Compiling tests
-if (EXAMPLES)
-    add_executable (basic_auth examples/basic_auth.cpp)
-    target_link_libraries (basic_auth  mongoose)
-
-    add_executable (examples examples/examples.cpp)
-    target_link_libraries (examples  mongoose)
-    if (HAS_JSON11)
-        target_link_libraries (examples json11)
-    endif (HAS_JSON11)
-endif (EXAMPLES)
+## Compiling tests
+#if (EXAMPLES)
+#    add_executable (basic_auth examples/basic_auth.cpp)
+#    target_link_libraries (basic_auth  mongoose)
+#
+#    add_executable (examples examples/examples.cpp)
+#    target_link_libraries (examples  mongoose)
+#    if (HAS_JSON11)
+#        target_link_libraries (examples json11)
+#    endif (HAS_JSON11)
+#endif (EXAMPLES)
 
 # install
 set (INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include/mongoose-cpp/" CACHE PATH "The directory the headers are installed in")
